@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  dynamodb:
+    image: amazon/dynamodb-local
+    hostname: dynamodblocal
+    container_name: helplightning
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath /data"
+    volumes:
+      - ./dynamodb-datum:/data
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+      
