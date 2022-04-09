@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  memcached:
+    image: docker.io/bitnami/memcached:latest
+    container_name: kachi-memcached
+    ports:
+      - '11211:11211'
+    expose:
+      - "11211"
