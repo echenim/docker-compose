@@ -1,32 +1,20 @@
-# RabbitMQ properties
+version: "3.9"
 services:
-        rabbitmq:
-              hostname: 'hive-rabbitmq'
-              image: rabbitmq:3-management
-              container_name: rabbitmq_management
-              restart: always               
-              ports: 
-                # - 25672:25672 # (erlang) communication between the nodes and CLI tool
-                # - 15672:15672 # communication with the web management API 
-                - 5672:5672
-                - 15672:15672
-               
-              volumes:
-                # data persistence
-                - ~/docker_conf/rabbitmq/data/:/var/lib/rabbitmq/
-                - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
-                # data mapping -> host: container
-                # queues and messages data of the container will be stored on the host
-              environment:
-                - RABBITMQ_DEFAULT_USER=admin
-                - RABBITMQ_DEFAULT_PASS=nopassword@1
-              networks:
-                - hive-network
-networks:
-    hive-network:
-        driver: bridge
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq-local'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=nopassword@1
+    networks:
+        - rabbitmq_net
 
-volumes:
-    logs-folder:
-        name: ${log_rabbitmq_management}
-        driver: local
+networks:
+  rabbitmq_net:
+    driver: bridge
