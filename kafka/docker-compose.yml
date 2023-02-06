@@ -86,9 +86,6 @@ services:
   
   connect:
     image: confluentinc/cp-kafka-connect-base:latest
-    build:
-      context: .
-      dockerfile: connect.Dockerfile
     ports:
       - "35000:35000"
     hostname: connect
