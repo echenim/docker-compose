@@ -47,11 +47,11 @@ services:
     depends_on:
       - black-box-kafka
     ports:
-      - "8081:8081"
+      - "8091:8091"
     networks:
       - k36t_net
     environment:
-      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8091
       SCHEMA_REGISTRY_HOST_NAME: black-box-schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: black-box-zookeeper:2181
       
@@ -99,7 +99,7 @@ services:
       KAFKA_REST_HOST_NAME: black-box-rest-proxy
       KAFKA_REST_BOOTSTRAP_SERVERS: "black-box-kafka:29092"
       KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
-      KAFKA_REST_SCHEMA_REGISTRY_URL: "http://black-box-schema-registry:8081"
+      KAFKA_REST_SCHEMA_REGISTRY_URL: "http://black-box-schema-registry:8091"
 
   
 
