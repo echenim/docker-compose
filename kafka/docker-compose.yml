@@ -7,7 +7,7 @@ services:
     ports:
       - "2181:2181"
     networks:
-      - pluto_net
+      - k36t_net
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -25,7 +25,7 @@ services:
       - "29092:29092"
       - "9092:9092"
     networks:
-      - pluto_net
+      - k36t_net
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: "black-box-zookeeper:2181"
@@ -49,7 +49,7 @@ services:
     ports:
       - "8081:8081"
     networks:
-      - pluto_net
+      - k36t_net
     environment:
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
       SCHEMA_REGISTRY_HOST_NAME: black-box-schema-registry
@@ -65,7 +65,7 @@ services:
     ports:
       - "8083:8083"
     networks:
-      - pluto_net
+      - k36t_net
     volumes:
       - /tmp/omniscient/jars:/etc/kafka-connect/jars
     environment:
@@ -94,37 +94,17 @@ services:
       - black-box-kafka
       - black-box-zookeeper
     networks:
-      - pluto_net
+      - k36t_net
     environment:
       KAFKA_REST_HOST_NAME: black-box-rest-proxy
       KAFKA_REST_BOOTSTRAP_SERVERS: "black-box-kafka:29092"
       KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
       KAFKA_REST_SCHEMA_REGISTRY_URL: "http://black-box-schema-registry:8081"
 
-  black-box-mongodb-server:
-    image: 157385605725.dkr.ecr.us-east-1.amazonaws.com/inf-data-mongo:4.4-latest
-    container_name: black-box-mongodb
-    command: --replSet rs0 --oplogSize 128
-    depends_on:
-      - black-box-zookeeper
-      - black-box-kafka
-      - black-box-kafka-connect
-    volumes:
-      - rs1:/data/db
-    networks:
-      - pluto_net
-    restart: always
-    ports:
-      - "27018:27017"
-    healthcheck:
-      test: test $$(echo "rs.initiate({_id:'rs0',members:[{_id:0,host:\"mongodb:27018\"}]}).ok || rs.status().ok" | mongo --port 27018  --quiet) -eq 1
-      interval: 10s
-      start_period: 30s  
   
 
-
 networks:
-  pluto_net:
+  k36t_net:
     driver: bridge
 
 volumes:
