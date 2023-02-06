@@ -43,8 +43,8 @@ services:
     image: confluentinc/cp-schema-registry:latest
     hostname: black-box-schema-registry
     container_name: black-box-schema-registry
-    # depends_on:
-    #   - black-box-kafka
+    depends_on:
+      - black-box-kafka
     ports:
       - "8091:8091"
     environment:
@@ -56,9 +56,9 @@ services:
     image: confluentinc/cp-kafka-connect:latest
     hostname: black-box-kafka-connect
     container_name: black-box-kafka-connect
-    # depends_on:
-    #   - black-box-kafka
-    #   - black-box-schema-registry
+    depends_on:
+      - black-box-kafka
+      - black-box-schema-registry
     ports:
       - "8083:8083"
     volumes:
@@ -88,9 +88,9 @@ services:
     image: confluentinc/cp-kafka-rest:latest
     hostname: black-box-rest-proxy
     container_name: black-box-rest-proxy
-    # depends_on:
-    #   - black-box-kafka
-    #   - black-box-schema-registry
+    depends_on:
+      - black-box-kafka
+      - black-box-schema-registry
     ports:
       - 8082:8082
     environment:
