@@ -26,9 +26,8 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: "black-box-zookeeper:2181"
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER1:PLAINTEXT,LISTENER2:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: LISTENER1://black-box-kafka:29092,LISTENER2://localhost:9092
-      KAFKA_LISTENERS: LISTENER1://black-box-kafka:29092,LISTENER2://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://black-box-kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
@@ -44,8 +43,8 @@ services:
     image: confluentinc/cp-schema-registry:latest
     hostname: black-box-schema-registry
     container_name: black-box-schema-registry
-    depends_on:
-      - black-box-kafka
+    # depends_on:
+    #   - black-box-kafka
     ports:
       - "8091:8091"
     environment:
@@ -57,9 +56,9 @@ services:
     image: confluentinc/cp-kafka-connect:latest
     hostname: black-box-kafka-connect
     container_name: black-box-kafka-connect
-    depends_on:
-      - black-box-kafka
-      - black-box-schema-registry
+    # depends_on:
+    #   - black-box-kafka
+    #   - black-box-schema-registry
     ports:
       - "8083:8083"
     volumes:
@@ -89,9 +88,9 @@ services:
     image: confluentinc/cp-kafka-rest:latest
     hostname: black-box-rest-proxy
     container_name: black-box-rest-proxy
-    depends_on:
-      - black-box-kafka
-      - black-box-schema-registry
+    # depends_on:
+    #   - black-box-kafka
+    #   - black-box-schema-registry
     ports:
       - 8082:8082
     environment:
@@ -100,11 +99,6 @@ services:
       KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
       KAFKA_REST_SCHEMA_REGISTRY_URL: "http://black-box-schema-registry:8091"
 
-  
-
-networks:
-  k36t_net:
-    driver: bridge
 
 volumes:
   rs1:
