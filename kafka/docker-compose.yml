@@ -114,6 +114,37 @@ services:
       CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: “1”
       CONNECT_PLUGIN_PATH: ‘/usr/share/java,/etc/kafka-connect/jars’
       CONNECT_CONFLUENT_TOPIC_REPLICATION_FACTOR: 1
+  
+  black-box-kafka-connect:
+    image: confluentinc/cp-kafka-connect:latest
+    hostname: black-box-kafka-connect
+    container_name: black-box-kafka-connect
+    depends_on:
+      - black-box-kafka
+      - black-box-zookeeper
+    ports:
+      - "8083:8083"
+    networks:
+      - pluto_net
+    volumes:
+      - /tmp/omniscient/jars:/etc/kafka-connect/jars
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: black-box-kafka:9092”
+      CONNECT_REST_ADVERTISED_HOST_NAME: black-box-kafka-connect
+      CONNECT_REST_PORT: 8083
+      CONNECT_GROUP_ID: compose-connect-group
+      CONNECT_CONFIG_STORAGE_TOPIC: docker-connect-configs
+      CONNECT_OFFSET_STORAGE_TOPIC: docker-connect-offsets
+      CONNECT_STATUS_STORAGE_TOPIC: docker-connect-status
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_INTERNAL_KEY_CONVERTER: “org.apache.kafka.connect.json.JsonConverter”
+      CONNECT_INTERNAL_VALUE_CONVERTER: “org.apache.kafka.connect.json.JsonConverter”
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: “1”
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: “1”
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: “1”
+      CONNECT_PLUGIN_PATH: ‘/usr/share/java,/etc/kafka-connect/jars’
+      CONNECT_CONFLUENT_TOPIC_REPLICATION_FACTOR: 1
 
   black-box-rest-proxy:
     image: confluentinc/cp-kafka-rest:latest
